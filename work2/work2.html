@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work2 : แบบทดสอบ Online</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.6.12/dist/vuetify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.12"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #74b9ff, #81ecec);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .quiz-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #0984e3;
+        }
+
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            height: 10px;
+            border-radius: 10px;
+        }
+
+        .result-card {
+            background-color: #00cec9;
+            color: white;
+            text-align: center;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .retry-button {
+            background-color: white;
+            color: #00cec9;
+            border-radius: 20px;
+        }
+
+        .v-radio {
+            transition: all 0.3s ease;
+        }
+
+        .v-radio:hover {
+            background-color: #dfe6e9;
+            border-radius: 8px;
+        }
+
+        .v-item--active {
+            background-color: #74b9ff !important;
+            border-radius: 8px;
+            color: white !important;
+        }
+
+        .answer-feedback {
+            font-size: 16px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            color: #2d3436;
+        }
+
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+
+        .explanation {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .score-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-container>
+                <!-- Welcome Screen -->
+                <div v-if="step === 'start'" class="container">
+                    <v-card class="quiz-card mx-auto">
+                        <v-card-title class="quiz-title">Welcome to the Math Quiz!</v-card-title>
+                        <v-card-text>
+                            <p style="text-align: center;">
+                                Challenge yourself with 20 simple math problems.
+                                Subtract and divide your way to success!
+                            </p>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn color="primary" block @click="startQuiz">
+                                Start Quiz
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </div>
+
+                <!-- Quiz Screen -->
+                <div v-else-if="step === 'quiz'" class="container">
+                    <v-progress-linear :value="progress" color="blue lighten-2"
+                        class="progress-bar"></v-progress-linear>
+
+                    <v-card class="quiz-card mx-auto">
+                        <v-card-title class="quiz-title">{{ currentQuestion.question }}</v-card-title>
+                        <v-card-text>
+                            <v-radio-group v-model="userAnswers[currentIndex]" column>
+                                <v-radio v-for="(option, index) in currentQuestion.options" :key="index" :label="option"
+                                    :value="option"></v-radio>
+                            </v-radio-group>
+                        </v-card-text>
+                        <v-card-actions class="quiz-actions">
+                            <v-btn color="blue lighten-2" :disabled="currentIndex === 0" @click="prevQuestion">
+                                Back
+                            </v-btn>
+                            <v-btn color="primary" @click="nextQuestion" :disabled="!userAnswers[currentIndex]"
+                                v-if="currentIndex < questions.length - 1">
+                                Next
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    <v-btn v-if="currentIndex === questions.length - 1" color="success" block class="mt-3"
+                        @click="submitQuiz">
+                        Submit Quiz
+                    </v-btn>
+                </div>
+
+                <div v-else-if="step === 'result'" class="container">
+                    <div class="score-container">
+                        <div class="result-card">
+                            <h2>You Scored</h2>
+                            <h1>{{ score }} / {{ questions.length }}</h1>
+                        </div>
+                    </div>
+                    <div class="explanation">
+                        <h3>Answer</h3>
+                        <div v-for="(q, index) in questions" :key="index">
+                            <div class="answer-feedback">
+                                <p><strong>{{ q.question }}</strong></p>
+                                <p class="answer-feedback" :class="{
+                  correct: userAnswers[index] === q.answer,
+                  incorrect: userAnswers[index] !== q.answer
+                }">
+                                    <span v-if="userAnswers[index] === q.answer">Correct!</span>
+                                    <span v-else>Incorrect! The correct answer is: {{ q.answer }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <v-btn class="retry-button mt-3" @click="restartQuiz">
+                        Retry Quiz
+                    </v-btn>
+                </div>
+            </v-container>
+        </v-app>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: {
+                step: 'start',
+                questions: [],
+                currentIndex: 0,
+                userAnswers: [],
+            },
+            computed: {
+                progress() {
+                    return ((this.currentIndex + 1) / this.questions.length) * 100;
+                },
+                score() {
+                    return this.questions.filter(
+                        (q, i) => q.answer === this.userAnswers[i]
+                    ).length;
+                },
+                currentQuestion() {
+                    return this.questions[this.currentIndex];
+                },
+            },
+            methods: {
+                async startQuiz() {
+                    const response = await fetch('quiz2.json');
+                    this.questions = await response.json();
+                    this.userAnswers = Array(this.questions.length).fill(null);
+                    this.step = 'quiz';
+                },
+                nextQuestion() {
+                    this.currentIndex++;
+                },
+                prevQuestion() {
+                    this.currentIndex--;
+                },
+                submitQuiz() {
+                    this.step = 'result';
+                },
+                restartQuiz() {
+                    this.step = 'start';
+                    this.currentIndex = 0;
+                    this.userAnswers = [];
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>
