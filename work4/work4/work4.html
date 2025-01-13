@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work 4</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+
+<body>
+    <a-scene>
+        <a-sky src="./image/AdobeStock_953670430.jpeg"></a-sky>
+
+        <a-camera>
+            <a-cursor color="#FF0000" fuse="true" fuse-timeout="500"></a-cursor>
+        </a-camera>
+
+        <a-box position="-5.615 2.5 -6.1" width="5" height="4" depth="0.1" color="#000000" opacity="0.7"></a-box>
+        <a-text value="Personal Information\n\nStudent ID: 663380001-1\nName: Natnicha Ratpetch\nNickname: Ray\nAge: 19\nFaculty: College of Computing (CP)\nMajor: Information Technology (IT)\nSpecial Skills: Drawing\nMotto: It's okay to lose someone. Just don't lose yourself.\nFavorite Color: Purple\nGmail: natnicha.ra@kkumail.com" position="-7.68814 2.93473 -6" color="#FFFFFF" width="4" align="left"></a-text>
+
+        <a-box position="5.58111 2.5 -6.1" width="5" height="4" depth="0.1" color="#000000" opacity="0.7"></a-box>
+        <a-text value="My Hobbies\n \nReading\nI enjoy reading both fiction and non-fiction books. It helps me expand my knowledge and creativity.\n\nPhotography\nCapturing beautiful moments through photography is one of my favorite activities. I love exploring new angles and techniques.\n\nTraveling\nTraveling gives me the opportunity to experience new cultures and environments, which always refreshes my perspective." position="3.48979 2.77942 -6" color="#FFFFFF" width="4" align="left"></a-text>
+
+        <a-box position="0 2.37633 -6" width="3" height="3" depth="3" rotation="0 119.95105431843491 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+            <a-image src="./image/me.png" position="0 0 1.51" width="3" height="3"></a-image> <!-- Front -->
+            <a-image src="./image/me.png" position="0 0 -1.51" width="3" height="3" rotation="0 180 0"></a-image> <!-- Back -->
+            <a-image src="./image/me.png" position="1.51 0 0" width="3" height="3" rotation="0 90 0"></a-image> <!-- Right -->
+            <a-image src="./image/me.png" position="-1.51 0 0" width="3" height="3" rotation="0 -90 0"></a-image> <!-- Left -->
+            <a-image src="./image/me.png" position="0 1.51 0" width="3" height="3" rotation="90 0 0"></a-image> <!-- Top -->
+            <a-image src="./image/me.png" position="0 -1.51 0" width="3" height="3" rotation="-90 0 0"></a-image> <!-- Bottom -->
+        </a-box>
+
+        <a-box position="0 -0.64357 -4" width="0.8" height="0.5" depth="0.1" color="#9C27B0" event-set__enter="material.color: #AB47BC" event-set__leave="material.color: #9C27B0" onclick="togglePlay()"></a-box>
+        <a-text value="Music" position="0 -0.06477 -4" align="center" color="#FFFFFF"></a-text>
+        <a-text value="Play/Pause" position="0 -1.14323 -4" align="center" color="#FFFFFF"></a-text>
+
+        <audio id="bg-music" src="./bgm/1mmortal-made-with-Voicemod.mp3" loop></audio>
+
+<a-entity gltf-model="./model/spaceship.glb" scale="3 3 3" position="-3 18.95663 -10" animation="property: position; to: -3 13.95663 -10; loop: true; dur: 3000; dir: alternate"></a-entity>
+
+<a-entity gltf-model="./model/astronaut.glb" scale="4 4 4" position="-5.85503 7.04766 -6.85801" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000" rotation="0 119.19487422093934 0"></a-entity>
+
+<a-entity gltf-model="./model/Aasteroid.glb" scale="2 2 2" position="0 -65.88051 -10" rotation="0 74.197 0" animation="property: rotation; to: 0 434.197 0; loop: true; dur: 10000; easing: linear"></a-entity>
+
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="10 100 -100" rotation="0 45 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="-25 120 -150" rotation="0 90 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="50 -25 -125" rotation="0 180 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="-75 50 -200" rotation="0 270 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="100 25 -250" rotation="0 360 0"></a-entity>
+
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="150 75 -200" rotation="0 30 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="-125 90 -175" rotation="0 60 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="75 -40 -225" rotation="0 120 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="-100 10 -275" rotation="0 240 0"></a-entity>
+<a-entity gltf-model="./model/Planet.glb" scale="3 3 3" position="125 50 -300" rotation="0 300 0"></a-entity>
+    </a-scene>
+
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+
+        function togglePlay() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+            } else {
+                bgMusic.pause();
+            }
+        }
+    </script>
+</body>
+
+</html>
