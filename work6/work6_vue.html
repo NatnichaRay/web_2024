@@ -48,7 +48,7 @@
                                     <td>{{s.id}}</td>
                                     <td>{{s.title}}</td>
                                     <td>{{s.fname}}</td>
-                                    <td>{{s.Iname}}</td>
+                                    <td>{{s.lname}}</td>
                                     <td>{{s.email}}</td>
                                     <td>
                                         <v-btn @click="edit(s)">EDIT</v-btn>
@@ -70,7 +70,7 @@
                             <v-combobox v-model="editstd.title" label="คำนำหน้า"
                                 :items="['นาย','นางสาว','ด.ช.','ด.ญ','นาง']"></v-combobox>
                             <v-text-field v-model="editstd.fname" label="ชื่อ"></v-text-field>
-                            <v-text-field v-model="editstd.Iname" label="นามสกุล"></v-text-field>
+                            <v-text-field v-model="editstd.lname" label="นามสกุล"></v-text-field>
                             <v-text-field v-model="editstd.email" label="E-mail"></v-text-field>
                         </v-card-text>
                         <v-card-actions>
@@ -100,7 +100,7 @@
             data() {
                 return {
                     title: "Work 6:  เรียกใช้ฐานข้อมูล Firebase ด้วย VueJS",
-                    footer: "ระบุ รหัส ชื่อ-สกุล สาขา",
+                    footer: "663380001-1 ณัฐณิชา รัตน์เพ็ชร IT",
                     studens: [],
                     editstd: {},
                     editmode: 0,
@@ -164,7 +164,7 @@
                     this.editstd = {};
                 },
                 savedata() {
-                    if (!this.editstd.id || !this.editstd.fname || !this.editstd.Iname || !this.editstd.email) {
+                    if (!this.editstd.id || !this.editstd.fname || !this.editstd.lname || !this.editstd.email) {
                         alert("กรุณากรอกข้อมูลให้ครบถ้วน");
                         return;
                     }

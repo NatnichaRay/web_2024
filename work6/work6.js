@@ -2,13 +2,13 @@ const RB = ReactBootstrap;
 const { Alert, Card, Button, Table } = ReactBootstrap;
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDPC5XW7qwNtktjBwGNCY7VrAifIwKChtk",
-    authDomain: "web2568-9fb97.firebaseapp.com",
-    projectId: "web2568-9fb97",
-    storageBucket: "web2568-9fb97.firebasestorage.app",
-    messagingSenderId: "743590747675",
-    appId: "1:743590747675:web:ebc02ef52de8c55636e2be",
-    measurementId: "G-0T3SLJ6NW1",
+    apiKey: "AIzaSyDJHlK_7IVG30f0QXmsaUEORnB2BTKMkIk",
+    authDomain: "myweb2568.firebaseapp.com",
+    projectId: "myweb2568",
+    storageBucket: "myweb2568.firebasestorage.app",
+    messagingSenderId: "261096586696",
+    appId: "1:261096586696:web:ce99c589ff2972062fd4fd",
+    measurementId: "G-B4J8SRWZV0",
 };
 
 class App extends React.Component {
@@ -20,8 +20,8 @@ class App extends React.Component {
 
     footer = (
         <div className="text-center mt-3">
-            <b>By ณัฐณิชา รัตน์เพ็ชร</b><br />
-            <b>663380001-1</b>
+            By 663380001-1 ณัฐณิชา รัตน์เพ็ชร<br/>
+            College of Computing, Khon Kaen University
         </div>
     );
 
@@ -31,8 +31,9 @@ class App extends React.Component {
         id: "",
         title: "",
         fname: "",
-        Iname: "",
+        lname: "",
         email: "",
+        user: null,
     };
 
     edit(std) {
@@ -46,6 +47,28 @@ class App extends React.Component {
             firebase.app();
         }
         this.readData();
+        this.checkAuth(); // ตรวจสอบสถานะการล็อกอิน
+    }
+    
+    checkAuth() {
+        firebase.auth().onAuthStateChanged((user) => {
+            this.setState({ user });
+        });
+    }
+
+    login() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                this.setState({ user: result.user });
+            })
+            .catch((error) => console.error("Login Error:", error));
+    }
+
+    logout() {
+        firebase.auth().signOut()
+            .then(() => this.setState({ user: null }))
+            .catch((error) => console.error("Logout Error:", error));
     }
 
     render() {
@@ -65,7 +88,7 @@ class App extends React.Component {
                         <div className="col-md-2"><TextInput label="ID" app={this} value="id" /></div>
                         <div className="col-md-2"><TextInput label="คำนำหน้า" app={this} value="title" /></div>
                         <div className="col-md-2"><TextInput label="ชื่อ" app={this} value="fname" /></div>
-                        <div className="col-md-2"><TextInput label="สกุล" app={this} value="Iname" /></div>
+                        <div className="col-md-2"><TextInput label="สกุล" app={this} value="lname" /></div>
                         <div className="col-md-4"><TextInput label="Email" app={this} value="email" /></div>
                     </div>
                     <div className="text-center mt-3">
@@ -104,7 +127,7 @@ class App extends React.Component {
         db.collection("students").doc(this.state.id).set({
             title: this.state.title,
             fname: this.state.fname,
-            Iname: this.state.Iname,
+            lname: this.state.lname,
             email: this.state.email,
         }).then(() => {
             alert("ข้อมูลถูกบันทึกเรียบร้อยแล้ว");
@@ -146,7 +169,7 @@ function StudentTable({ data, app }) {
                         <td>{s.id}</td>
                         <td>{s.title}</td>
                         <td>{s.fname}</td>
-                        <td>{s.Iname}</td>
+                        <td>{s.lname}</td>
                         <td>{s.email}</td>
                         <td>
                             <Button variant="warning" size="sm" onClick={() => app.edit(s)}>แก้ไข</Button>{' '}
