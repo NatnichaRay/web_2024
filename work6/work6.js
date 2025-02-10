@@ -38,9 +38,9 @@ class App extends React.Component {
 
     componentDidMount() {
         if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig); // Initializing Firebase app
         } else {
-            firebase.app();
+            firebase.app(); // Using existing app
         }
         this.readData();
         this.checkAuth();
