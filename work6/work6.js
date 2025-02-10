@@ -81,7 +81,15 @@ class App extends React.Component {
                             <Button variant="success" onClick={() => this.login()}>Login</Button>
                         )}
                     </div>
-                    <StudentTable data={this.state.students} app={this} />
+                    
+                    {/* Display student data only if the user is logged in */}
+                    {this.state.user ? (
+                        <StudentTable data={this.state.students} app={this} />
+                    ) : (
+                        <Alert variant="warning" className="text-center">
+                            กรุณาเข้าสู่ระบบเพื่อดูข้อมูลนักศึกษา
+                        </Alert>
+                    )}
                 </Card.Body>
                 <Card.Footer className="bg-light">
                     <h5 className="text-center">เพิ่ม/แก้ไขข้อมูล นักศึกษา</h5>
