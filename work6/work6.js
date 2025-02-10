@@ -36,10 +36,6 @@ class App extends React.Component {
         user: null,
     };
 
-    edit(std) {
-        this.setState({ ...std });
-    }
-
     componentDidMount() {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -47,7 +43,7 @@ class App extends React.Component {
             firebase.app();
         }
         this.readData();
-        this.checkAuth(); // ตรวจสอบสถานะการล็อกอิน
+        this.checkAuth();
     }
     
     checkAuth() {
@@ -79,6 +75,11 @@ class App extends React.Component {
                     <div className="d-flex justify-content-start gap-2 mb-3">
                         <Button variant="primary" onClick={() => this.readData()}>Read Data</Button>
                         <Button variant="primary" onClick={() => this.autoRead()}>Auto Read</Button>
+                        {this.state.user ? (
+                            <Button variant="danger" onClick={() => this.logout()}>Logout</Button>
+                        ) : (
+                            <Button variant="success" onClick={() => this.login()}>Login</Button>
+                        )}
                     </div>
                     <StudentTable data={this.state.students} app={this} />
                 </Card.Body>
@@ -186,7 +187,11 @@ function TextInput({ label, app, value }) {
     return (
         <div className="form-group">
             <label>{label}:</label>
-            <input className="form-control" value={app.state[value]} onChange={(ev) => app.setState({ [value]: ev.target.value })} />
+            <input 
+                className="form-control" 
+                value={app?.state?.[value] ?? ""} 
+                onChange={(ev) => app?.setState({ [value]: ev.target.value })} 
+            />
         </div>
     );
 }
