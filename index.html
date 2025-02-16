@@ -12,15 +12,21 @@
             color: #fff;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
             text-align: center;
             padding: 40px 20px;
+            width: 90%;
+            max-width: 500px;
         }
 
         h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             margin-bottom: 30px;
             color: #e1bee7;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -32,19 +38,21 @@
         }
 
         ul li {
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         ul li a {
             text-decoration: none;
             color: #fff;
             background-color: #9c27b0;
-            padding: 15px 30px;
+            padding: 10px 20px;
             border-radius: 12px;
-            font-size: 1.4rem;
+            font-size: 1rem;
             display: inline-block;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
+            width: 100%;
+            max-width: 250px;
         }
 
         ul li a:hover {
@@ -53,10 +61,33 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
+        .work6-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .work6-container a {
+            flex: 1;
+            text-align: center;
+        }
+
         p {
             font-size: 1rem;
             margin-top: 40px;
             color: #d1c4e9;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            ul li a {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -70,12 +101,15 @@
             <li><a href="work3/work3.html">งานที่ 3</a></li>
             <li><a href="work4/work4.html">งานที่ 4</a></li>
             <li><a href="work5/work5.html">งานที่ 5</a></li>
-            <li><a href="work6/work6.html">งานที่ 6</a></li>
+            <li class="work6-container">
+                <a href="work6/work6.html">งานที่ 6</a>
+                <a href="work6/work6_vue.html">งานที่ 6 - Vue</a>
+            </li>
         </ul>
         <p>
             โดยนางสาวณัฐณิชา รัตน์เพ็ชร<br>
             663380001-1
-        </p>          
+        </p>
     </div>
 </body>
 
