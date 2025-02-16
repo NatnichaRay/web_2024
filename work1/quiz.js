@@ -21,7 +21,7 @@ $(document).ready(function () {
     
         questions.forEach((question, index) => {
             const questionHtml = `
-                <div class="question-container">
+                <div class="question-container" id="question-container${index}">
                     <h4>${question.title}</h4>
                     ${question.options.map((option, i) => `
                         <div class="form-check">
@@ -29,24 +29,49 @@ $(document).ready(function () {
                             <label class="form-check-label">${option}</label>
                         </div>
                     `).join('')}
+                    <div class="answer" id="answer${index}" style="display: none;"></div>
                 </div>
             `;
             quizContainer.append(questionHtml);
         });
     
-        $("#submit-quiz").show().click(checkAnswers);
+        $("#submit-quiz").show().prop("disabled", true);
+        $("input[type='radio']").change(checkAllAnswered);
+    }
+    
+    function checkAllAnswered() {
+        let allAnswered = true;
+    
+        questions.forEach((_, index) => {
+            if ($(`input[name="question${index}"]:checked`).length === 0) {
+                allAnswered = false;
+            }
+        });
+    
+        $("#submit-quiz").prop("disabled", !allAnswered);
     }
     
     function checkAnswers() {
         let score = 0;
-
+    
         questions.forEach((question, index) => {
             const selectedOption = $(`input[name="question${index}"]:checked`).val();
+            const answerContainer = $(`#answer${index}`);
+            const questionContainer = $(`#question-container${index}`);
+    
             if (selectedOption == question.answer) {
                 score++;
+                answerContainer.text(`ถูกต้อง! คำตอบที่ถูกคือ: ${question.options[question.answer]}`).css("color", "green");
+                questionContainer.css("border", "2px solid green");
+            } else {
+                answerContainer.text(`ผิด! คำตอบที่ถูกคือ: ${question.options[question.answer]}`).css("color", "red");
+                questionContainer.css("border", "2px solid red");
             }
+            answerContainer.show();
         });
-
+    
         $("#score-section").text(`คุณได้คะแนน: ${score} จาก ${questions.length}`);
     }
+    
+    $("#submit-quiz").show().off("click").click(checkAnswers);
 });
